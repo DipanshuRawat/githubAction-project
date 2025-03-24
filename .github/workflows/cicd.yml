@@ -23,13 +23,13 @@ jobs:
     runs-on: self-hosted
     needs: compile
 
-    steps:
+     steps:
     - uses: actions/checkout@v4
     - name: Trivy Installation
       run: |
         sudo apt-get install -y wget apt-transport-https gnupg lsb-release
-        wget -qO /usr/share/keyrings/trivy.gpg https://aquasecurity.github.io/trivy-repo/deb/public.key
-        echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
         sudo apt-get update -y
         sudo apt-get install -y trivy
 
